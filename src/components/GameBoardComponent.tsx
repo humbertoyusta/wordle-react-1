@@ -17,24 +17,34 @@ export default function GameBoardComponent() {
         currentGuess: "",
     });
 
+    const correctWord = useGameBoardContext().correctWord;
+
     // Add a character to currentGuess when a key is pressed
     useKeypress((key: string) => {
-        if (key.length === 1) {
-            let charToAppend = key.toUpperCase();
-            setState({...state, currentGuess: state.currentGuess + charToAppend});
+        // check if key is a letter
+        if (key.length === 1 && key.match(/[a-zA-Z]/i)) {
+            // check if currentGuess is not full
+            if (state.currentGuess.length < correctWord.length) {
+                // append the key to currentGuess
+                let charToAppend = key.toUpperCase();
+                setState({...state, currentGuess: state.currentGuess + charToAppend});
+            }
         }
     });
 
     // Add the currentGuess to wordGuesses when the enter key is pressed
-    const correctWord = useGameBoardContext().correctWord;
     useKeypress((key: string) => {
         if (key === "Enter") {
 
-            if (!GameBoardHelper.isWordValidLength(state.currentGuess, correctWord))
+            if (!GameBoardHelper.isWordValidLength(state.currentGuess, correctWord)) {
                 alert("Word must be the same length as the correct word");
+                return;
+            }
 
-            if (!GameBoardHelper.isWordNotGuessed(state.currentGuess, state.wordGuesses))
+            if (!GameBoardHelper.isWordNotGuessed(state.currentGuess, state.wordGuesses)) {
                 alert("Word has already been guessed");
+                return;
+            }
 
             const currentGuessStatus = GameBoardHelper.getWordStatus(state.currentGuess, correctWord);
 

@@ -5,7 +5,7 @@ export default function useKeypress(handler: (key: string) => void) {
         function handleKeypress(e: KeyboardEvent) {
             handler(e.key);
         }
-        window.addEventListener('keypress', handleKeypress);
-        return () => window.removeEventListener('keypress', handleKeypress);
+        window.addEventListener('keydown', handleKeypress);
+        return () => window.removeEventListener('keydown', handleKeypress);
     }, [handler]);
 }

@@ -10,9 +10,9 @@ export default class GameBoardHelper {
         // If it isn't, add it to the frequency map
         for (let i = 0; i < word.length; i++) {
             if (word[i] === correctWord[i]) {
-                status.push(LetterCellStatusEnum.CORRECT);
+                status[i] = LetterCellStatusEnum.CORRECT;
             } else {
-                frequencyOfNotCorrect.set(word[i], (frequencyOfNotCorrect.get(word[i]) || 0).valueOf() + 1);
+                frequencyOfNotCorrect.set(correctWord[i], (frequencyOfNotCorrect.get(correctWord[i]) || 0).valueOf() + 1);
             }
         }
 
@@ -22,10 +22,10 @@ export default class GameBoardHelper {
             if (status[i] === LetterCellStatusEnum.CORRECT) {
                 continue;
             }
-            const frequency = frequencyOfNotCorrect.get(correctWord[i]);
+            const frequency = frequencyOfNotCorrect.get(word[i]);
             if (frequency !== undefined && frequency.valueOf() > 0) {
                 status[i] = LetterCellStatusEnum.BAD_POSITION;
-                frequencyOfNotCorrect.set(correctWord[i], (frequencyOfNotCorrect.get(correctWord[i]) || 0).valueOf() - 1);
+                frequencyOfNotCorrect.set(word[i], (frequencyOfNotCorrect.get(correctWord[i]) || 0).valueOf() - 1);
             } else {
                 status[i] = LetterCellStatusEnum.INCORRECT;
             }
