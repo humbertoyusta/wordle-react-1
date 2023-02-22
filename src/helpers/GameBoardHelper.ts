@@ -48,16 +48,4 @@ export default class GameBoardHelper {
     static isWordNotGuessed(word: String, guessedWords: String[]): boolean {
         return !guessedWords.includes(word);
     }
-
-    static isCorrectWord(status: Number[], correctWord: String): Boolean {
-        if (status.length !== correctWord.length) {
-            return false;
-        }
-        for (let i = 0; i < status.length; i++) {
-            if (status[i] !== LetterCellStatusEnum.CORRECT) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
