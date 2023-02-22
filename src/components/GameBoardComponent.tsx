@@ -2,9 +2,12 @@ import React from "react";
 import WordComponent from "./WordComponent";
 import {useGameBoardContext} from "../contexts/GameBoardProvider";
 import useKeypress from "../hooks/useKeypress";
-import GameBoardHelper from "../helpers/GameBoardHelper";
+import KeyboardComponent from "./KeyboardComponent";
+import {GameBoardHandleKeyPressHelper} from "../helpers/GameBoardHandleKeyPressHelper";
+import {InvalidKeyPressError} from "../errors/InvalidKeyPressError";
+import {AlertKeyPressError} from "../errors/AlertKeyPressError";
 
-type GameBoardState = {
+export type GameBoardState = {
     wordGuesses: String[],
     wordGuessesStatus: Number[][],
     currentGuess: String,
@@ -12,6 +15,9 @@ type GameBoardState = {
 }
 
 export default function GameBoardComponent() {
+    // get maxGuesses and correctWord from the context
+    const {maxGuesses, correctWord} = useGameBoardContext();
+
     const [state, setState] = React.useState<GameBoardState>({
         wordGuesses: [],
         wordGuessesStatus: [],
@@ -19,65 +25,28 @@ export default function GameBoardComponent() {
         hasWon: false,
     });
 
-    // get maxGuesses and correctWord from the context
-    const {maxGuesses, correctWord} = useGameBoardContext();
+    const handleKeyPress = (key: String) => {
+        try {
+            const newState = GameBoardHandleKeyPressHelper.handleKeyPress(key, state, correctWord, maxGuesses);
 
-    // Add a character to currentGuess when a key is pressed
-    useKeypress((key: string) => {
-        // check if key is a letter
-        if (key.length === 1 && key.match(/[a-zA-Z]/i)) {
-            // check if currentGuess is not full
-            if (state.currentGuess.length < correctWord.length &&
-                !state.hasWon &&
-                state.wordGuesses.length < maxGuesses) {
-                    // append the key to currentGuess
-                    let charToAppend = key.toUpperCase();
-                    setState({...state, currentGuess: state.currentGuess + charToAppend});
+            setState(newState);
+
+            if (newState.hasWon)
+                alert("Congratulations, you won!");
+
+            if (newState.wordGuesses.length === maxGuesses)
+                alert("You lost! The correct word was: " + correctWord);
+        } catch (e) {
+            if (e instanceof AlertKeyPressError)
+                alert(e.message);
+            else {
+                if (!(e instanceof InvalidKeyPressError))
+                    throw e;
             }
         }
-    });
+    }
 
-    // Add the currentGuess to wordGuesses when the enter key is pressed
-    useKeypress((key: string) => {
-        if (key === "Enter" && !state.hasWon && state.wordGuesses.length < maxGuesses) {
-            if (!GameBoardHelper.isWordValidLength(state.currentGuess, correctWord)) {
-                alert("Word must be the same length as the correct word");
-                return;
-            }
-
-            if (!GameBoardHelper.isWordNotGuessed(state.currentGuess, state.wordGuesses)) {
-                alert("Word has already been guessed");
-                return;
-            }
-
-            const currentGuessStatus = GameBoardHelper.getWordStatus(state.currentGuess, correctWord);
-
-            const won = GameBoardHelper.isWordCorrect(state.currentGuess, correctWord);
-
-            setState({
-                ...state,
-                wordGuesses: [...state.wordGuesses, state.currentGuess],
-                currentGuess: "",
-                wordGuessesStatus: [...state.wordGuessesStatus, currentGuessStatus],
-                hasWon: won,
-            });
-
-            if (won) {
-                alert("You won!");
-                return;
-            }
-            if (state.wordGuesses.length + 1 === maxGuesses) {
-                alert("You lost. Thanks for playing!, the correct word was: " + correctWord);
-                return;
-            }
-        }
-    });
-
-    // Remove the last character from currentGuess when the backspace key is pressed
-    useKeypress((key: string) => {
-        if (key === "Backspace" && !state.hasWon && state.wordGuesses.length < maxGuesses)
-            setState({...state, currentGuess: state.currentGuess.slice(0, -1)});
-    });
+    useKeypress(handleKeyPress);
 
     // Create a counter to use as a key for each word component
     let counter = 0;
@@ -97,9 +66,12 @@ export default function GameBoardComponent() {
         words.push(<WordComponent key={counter ++} word={""} status={[]} />);
 
     return (
-        <div className="flex-col flex justify-between flex-nowrap m-auto">
-            {words}
-        </div>
+        <>
+            <div className="flex-col flex justify-between flex-nowrap m-auto">
+                {words}
+            </div>
+            <KeyboardComponent handleKeyPress={handleKeyPress} />
+        </>
     );
 }
 
