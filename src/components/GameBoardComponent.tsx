@@ -64,6 +64,11 @@ export default function GameBoardComponent() {
 
             if (won) {
                 alert("You won!");
+                return;
+            }
+            if (state.wordGuesses.length + 1 === maxGuesses) {
+                alert("You lost. Thanks for playing!, the correct word was: " + correctWord);
+                return;
             }
         }
     });
