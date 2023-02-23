@@ -17,7 +17,7 @@ export type GameBoardState = {
 }
 
 export default function GameBoardComponent() {
-    const [alerts, setAlerts] = React.useState<JSX.Element[]>([]);
+    const [alert, setAlert] = React.useState<JSX.Element | undefined>(undefined);
 
     // get maxGuesses and correctWord from the context
     const {maxGuesses, correctWord} = useGameBoardContext();
@@ -37,13 +37,13 @@ export default function GameBoardComponent() {
             setState(newState);
 
             if (newState.hasWon)
-                setAlerts([...alerts, <Alert message={"Congratulations, you won!"} key={alerts.length} color={"green"} />]);
+                setAlert(<Alert message={"Congratulations, you won!"} color={"green"} />);
 
             if (newState.wordGuesses.length === maxGuesses)
-                setAlerts([...alerts, <Alert message={"You lost! The correct word was: " + correctWord} key={alerts.length} color={"red"} />]);
+                setAlert(<Alert message={"You lost! The correct word was: " + correctWord} color={"red"} />);
         } catch (e) {
             if (e instanceof AlertKeyPressError)
-                setAlerts([...alerts, <Alert message={e.message} key={alerts.length} color={"red"} />]);
+                setAlert(<Alert message={e.message} color={"red"} />);
             else {
                 if (!(e instanceof InvalidKeyPressError))
                     throw e;
@@ -72,7 +72,7 @@ export default function GameBoardComponent() {
 
     return (
         <>
-            {alerts}
+            {alert}
             <div className="flex-col flex justify-between flex-nowrap m-auto">
                 {words}
             </div>
