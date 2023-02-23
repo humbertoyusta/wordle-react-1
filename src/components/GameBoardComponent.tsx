@@ -37,13 +37,13 @@ export default function GameBoardComponent() {
             setState(newState);
 
             if (newState.hasWon)
-                setAlert(<Alert message={"Congratulations, you won!"} color={"green"} />);
+                setAlert(<Alert message={"Congratulations, you won!"} color={"green"} key={state.currentGuess.valueOf()}/>);
 
             if (newState.wordGuesses.length === maxGuesses)
-                setAlert(<Alert message={"You lost! The correct word was: " + correctWord} color={"red"} />);
+                setAlert(<Alert message={"You lost! The correct word was: " + correctWord} color={"red"} key={state.currentGuess.valueOf()}/>);
         } catch (e) {
             if (e instanceof AlertKeyPressError)
-                setAlert(<Alert message={e.message} color={"red"} />);
+                setAlert(<Alert message={e.message} color={"red"} key={state.currentGuess.valueOf()} />);
             else {
                 if (!(e instanceof InvalidKeyPressError))
                     throw e;
@@ -70,6 +70,7 @@ export default function GameBoardComponent() {
     while (words.length < maxGuesses)
         words.push(<WordComponent key={counter ++} word={""} status={[]} />);
 
+    console.log(alert);
     return (
         <>
             {alert}
