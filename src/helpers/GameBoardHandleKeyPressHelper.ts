@@ -20,11 +20,11 @@ export class GameBoardHandleKeyPressHelper {
     }
 
     private static handleEnterKeyPress(oldState: GameBoardState, correctWord: String): GameBoardState {
-        if (!wordExists(oldState.currentGuess))
-            throw new AlertKeyPressError("Word must exist.");
-
         if (!GameBoardHelper.isWordValidLength(oldState.currentGuess, correctWord))
             throw new AlertKeyPressError("Not enough letters.");
+
+        if (!wordExists(oldState.currentGuess))
+            throw new AlertKeyPressError("Word must exist.");
 
         if (!GameBoardHelper.isWordNotGuessed(oldState.currentGuess, oldState.wordGuesses))
             throw new AlertKeyPressError("Word has already been guessed.");
