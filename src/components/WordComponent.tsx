@@ -1,6 +1,7 @@
 import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 import LetterCellComponent from "./LetterCellComponent";
 import {useGameBoardContext} from "../contexts/GameBoardProvider";
+import {WordDiv} from "../styledComponents/WordDiv";
 
 export default function WordComponent({word, status}: {word: String, status: Number[]}) {
 
@@ -25,8 +26,8 @@ export default function WordComponent({word, status}: {word: String, status: Num
         letters.push(<LetterCellComponent key={counter ++} letter={""} status={LetterCellStatusEnum.EMPTY} />);
 
     return (
-        <div className="flex-row flex justify-between flex-nowrap m-auto">
+        <WordDiv>
             {letters}
-        </div>
+        </WordDiv>
     );
 }

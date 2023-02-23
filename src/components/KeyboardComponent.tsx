@@ -1,6 +1,8 @@
 import React from "react";
 import KeyComponent from "./KeyComponent";
 import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
+import {KeyBoardRowDiv} from "../styledComponents/KeyBoardRowDiv";
+import {KeyBoardDiv} from "../styledComponents/KeyBoardDiv";
 
 type KeyboardState = {
     keys: String[][],
@@ -31,13 +33,13 @@ export default function KeyboardComponent(props: KeyboardProps) {
     });
 
     return (
-        <div className={"flex-nowrap flex flex-col mt-5"}>
+        <KeyBoardDiv>
             {state.keys.map((row, i) => (
-                <div key={i} className={"flex-row flex justify-between flex-nowrap m-auto"}>
+                <KeyBoardRowDiv key={i}>
                     {row.map((key, j) =>
                         <KeyComponent key={j} letter={key} status={props.letterStatus.get(key)} handleKeyPress={props.handleKeyPress} />)}
-                </div>
+                </KeyBoardRowDiv>
             ))}
-        </div>
+        </KeyBoardDiv>
     );
 }
