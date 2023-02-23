@@ -2,6 +2,7 @@ import {GameBoardState} from "../components/GameBoardComponent";
 import {InvalidKeyPressError} from "../errors/InvalidKeyPressError";
 import GameBoardHelper from "./GameBoardHelper";
 import {AlertKeyPressError} from "../errors/AlertKeyPressError";
+const wordExists = require("word-exists");
 
 export class GameBoardHandleKeyPressHelper {
     private static handleLetterKeyPress(key: String, oldState: GameBoardState): GameBoardState {
@@ -19,11 +20,14 @@ export class GameBoardHandleKeyPressHelper {
     }
 
     private static handleEnterKeyPress(oldState: GameBoardState, correctWord: String): GameBoardState {
+        if (!wordExists(oldState.currentGuess))
+            throw new AlertKeyPressError("Word must exist.");
+
         if (!GameBoardHelper.isWordValidLength(oldState.currentGuess, correctWord))
-            throw new AlertKeyPressError("Word must be the same length as the correct word");
+            throw new AlertKeyPressError("Not enough letters.");
 
         if (!GameBoardHelper.isWordNotGuessed(oldState.currentGuess, oldState.wordGuesses))
-            throw new AlertKeyPressError("Word has already been guessed");
+            throw new AlertKeyPressError("Word has already been guessed.");
 
         const currentGuessStatus = GameBoardHelper.getWordStatus(oldState.currentGuess, correctWord);
 

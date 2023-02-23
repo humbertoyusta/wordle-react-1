@@ -70,7 +70,6 @@ export default function GameBoardComponent() {
     while (words.length < maxGuesses)
         words.push(<WordComponent key={counter ++} word={""} status={[]} />);
 
-    console.log(alerts);
     return (
         <>
             {alerts}
