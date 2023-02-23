@@ -25,7 +25,7 @@ export default class GameBoardHelper {
             const frequency = frequencyOfNotCorrect.get(word[i]);
             if (frequency !== undefined && frequency.valueOf() > 0) {
                 status[i] = LetterCellStatusEnum.BAD_POSITION;
-                frequencyOfNotCorrect.set(word[i], (frequencyOfNotCorrect.get(correctWord[i]) || 0).valueOf() - 1);
+                frequencyOfNotCorrect.set(word[i], (frequencyOfNotCorrect.get(word[i]) || 0).valueOf() - 1);
             } else {
                 status[i] = LetterCellStatusEnum.INCORRECT;
             }
