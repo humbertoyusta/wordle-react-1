@@ -8,10 +8,11 @@ import {InvalidKeyPressError} from "../errors/InvalidKeyPressError";
 import {AlertKeyPressError} from "../errors/AlertKeyPressError";
 
 export type GameBoardState = {
-    wordGuesses: String[],
-    wordGuessesStatus: Number[][],
     currentGuess: String,
     hasWon: Boolean,
+    letterStatus: Map<String, Number>,
+    wordGuesses: String[],
+    wordGuessesStatus: Number[][],
 }
 
 export default function GameBoardComponent() {
@@ -23,6 +24,7 @@ export default function GameBoardComponent() {
         wordGuessesStatus: [],
         currentGuess: "",
         hasWon: false,
+        letterStatus: new Map<String, Number>(),
     });
 
     const handleKeyPress = (key: String) => {
@@ -70,7 +72,7 @@ export default function GameBoardComponent() {
             <div className="flex-col flex justify-between flex-nowrap m-auto">
                 {words}
             </div>
-            <KeyboardComponent handleKeyPress={handleKeyPress} />
+            <KeyboardComponent handleKeyPress={handleKeyPress} letterStatus={state.letterStatus} />
         </>
     );
 }

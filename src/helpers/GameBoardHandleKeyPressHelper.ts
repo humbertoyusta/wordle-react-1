@@ -35,6 +35,7 @@ export class GameBoardHandleKeyPressHelper {
             currentGuess: "",
             wordGuessesStatus: [...oldState.wordGuessesStatus, currentGuessStatus],
             hasWon: won,
+            letterStatus: GameBoardHelper.newLetterStatus(oldState.letterStatus, oldState.currentGuess, currentGuessStatus),
         };
     }
 

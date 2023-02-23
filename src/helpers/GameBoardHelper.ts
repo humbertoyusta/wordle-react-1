@@ -48,4 +48,23 @@ export default class GameBoardHelper {
     static isWordNotGuessed(word: String, guessedWords: String[]): boolean {
         return !guessedWords.includes(word);
     }
+
+    static newLetterStatus(oldStatus: Map<String, Number>, word: String, wordStatus: Number[]): Map<String, Number> {
+        const newStatus = new Map<String, Number>(oldStatus);
+        for (let i = 0; i < word.length; i++) {
+            if (wordStatus[i] === LetterCellStatusEnum.CORRECT) {
+                newStatus.set(word[i], LetterCellStatusEnum.CORRECT);
+            }
+            if (wordStatus[i] === LetterCellStatusEnum.BAD_POSITION) {
+                if (newStatus.get(word[i]) !== LetterCellStatusEnum.CORRECT)
+                    newStatus.set(word[i], LetterCellStatusEnum.BAD_POSITION);
+            }
+            if (wordStatus[i] === LetterCellStatusEnum.INCORRECT) {
+                if (newStatus.get(word[i]) !== LetterCellStatusEnum.CORRECT &&
+                    newStatus.get(word[i]) !== LetterCellStatusEnum.BAD_POSITION)
+                    newStatus.set(word[i], LetterCellStatusEnum.INCORRECT);
+            }
+        }
+        return newStatus;
+    }
 }

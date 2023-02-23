@@ -4,11 +4,11 @@ import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 
 type KeyboardState = {
     keys: String[][],
-    status: Number[][],
 }
 
 type KeyboardProps = {
     handleKeyPress: (letter: String) => void,
+    letterStatus: Map<String, Number>,
 }
 
 // Create the keyboard state
@@ -28,7 +28,6 @@ for (let i = 0; i < keys.length; i++) {
 export default function KeyboardComponent(props: KeyboardProps) {
     const [state, setState] = React.useState<KeyboardState>({
         keys: keys,
-        status: status,
     });
 
     return (
@@ -36,7 +35,7 @@ export default function KeyboardComponent(props: KeyboardProps) {
             {state.keys.map((row, i) => (
                 <div key={i} className={"flex-row flex justify-between flex-nowrap m-auto"}>
                     {row.map((key, j) =>
-                        <KeyComponent key={j} letter={key} status={state.status[i][j]} handleKeyPress={props.handleKeyPress} />)}
+                        <KeyComponent key={j} letter={key} status={props.letterStatus.get(key)} handleKeyPress={props.handleKeyPress} />)}
                 </div>
             ))}
         </div>
