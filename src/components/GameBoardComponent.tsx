@@ -22,6 +22,7 @@ export default function GameBoardComponent() {
 
     // get maxGuesses and correctWord from the context
     const {maxGuesses, correctWord} = useGameBoardContext();
+    console.log(correctWord);
 
     const [state, setState] = React.useState<GameBoardState>({
         wordGuesses: [],
@@ -40,7 +41,7 @@ export default function GameBoardComponent() {
             if (newState.hasWon)
                 setAlert(<Alert message={"Congratulations, you won!"} color={"green"} ttl={5000} key={Math.random()}/>);
 
-            if (newState.wordGuesses.length === maxGuesses)
+            if (newState.wordGuesses.length === maxGuesses && !newState.hasWon)
                 setAlert(<Alert message={"You lost! The correct word was: " + correctWord} color={"red"} ttl={5000} key={Math.random()}/>);
         } catch (e) {
             if (e instanceof AlertKeyPressError) {
