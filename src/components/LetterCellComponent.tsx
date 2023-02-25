@@ -4,8 +4,6 @@ import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 type Props = {
     letter: String,
     status: Number,
-    shouldShake: Boolean,
-    onAnimationEnd: () => void,
 };
 
 export default function LetterCellComponent(props: Props) {
@@ -13,8 +11,6 @@ export default function LetterCellComponent(props: Props) {
         <LetterCellDiv
             status={props.status}
             currentlyFilled={(props.letter !== " " && props.letter !== "") && (props.status === LetterCellStatusEnum.EMPTY)}
-            shouldShake={props.shouldShake}
-            onAnimationEnd={props.onAnimationEnd}
         >
             {props.letter}
         </LetterCellDiv>

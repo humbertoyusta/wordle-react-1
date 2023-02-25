@@ -29,8 +29,6 @@ export default function WordComponent({word, status, shouldShake = false, onAnim
             key={counter ++}
             letter={word[i]}
             status={status[i]}
-            shouldShake={shouldShake}
-            onAnimationEnd={onAnimationEnd}
         />)
     }
 
@@ -40,12 +38,10 @@ export default function WordComponent({word, status, shouldShake = false, onAnim
             key={counter ++}
             letter={""}
             status={LetterCellStatusEnum.EMPTY}
-            shouldShake={shouldShake}
-            onAnimationEnd={onAnimationEnd}
         />);
 
     return (
-        <WordDiv>
+        <WordDiv shouldShake={shouldShake} onAnimationEnd={onAnimationEnd}>
             {letters}
         </WordDiv>
     );

@@ -1,4 +1,4 @@
-import styled, {css, keyframes} from "styled-components";
+import styled, {keyframes} from "styled-components";
 
 // create a keyframe that scales the element up and down
 const scale = keyframes`
@@ -13,38 +13,12 @@ const scale = keyframes`
     }
 `;
 
-// create a keyframe that makes an element shake horizontally
-const shake = keyframes`
-    0% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(5px); 
-    }
-    50% {
-      transform: translateX(-5px);
-    }
-    75% {
-      transform: translateX(5px);
-    }
-    100% {
-        transform: translateX(0);
-    }
-`;
+type LetterCellDivProps = {
+  status: Number,
+  currentlyFilled: Boolean,
+};
 
-function getAnimation({shouldShake, currentlyFilled}: {shouldShake: Boolean, currentlyFilled: Boolean}) {
-  if (shouldShake && !currentlyFilled) {
-    return css`${shake} 0.3s ease-in-out`;
-  } else if (!shouldShake && currentlyFilled) {
-    return css`${scale} 0.3s ease-in-out`;
-  } else if (shouldShake && currentlyFilled) {
-    return css`${shake} 0.3s ease-in-out, ${scale} 0.3s ease-in-out`;
-  } else {
-    return "none";
-  }
-}
-
-export const LetterCellDiv = styled.div<{status: Number, currentlyFilled: Boolean, shouldShake: Boolean}>`
+export const LetterCellDiv = styled.div<LetterCellDivProps>`
   color: rgba(0, 0, 0, 0.7);
   font-size: 1.2rem;
   display: flex;
@@ -62,8 +36,5 @@ export const LetterCellDiv = styled.div<{status: Number, currentlyFilled: Boolea
                           props.status === 3 ? "#ffb3b3" :
                                   "#f2f2f2"
   };
-  animation: ${props => getAnimation({
-    shouldShake: props.shouldShake, 
-    currentlyFilled: props.currentlyFilled
-  })};
+  animation: ${props => props.currentlyFilled ? scale : "none"} 0.3s ease-in-out;
 `;
