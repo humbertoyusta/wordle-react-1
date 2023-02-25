@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import WordComponent from "./WordComponent";
 import {useGameBoardContext} from "../contexts/GameBoardProvider";
 import useKeypress from "../hooks/useKeypress";
@@ -52,9 +52,9 @@ export default function GameBoardComponent() {
                     throw e;
             }
         }
-    }
+    };
 
-    const handleAnimationEnd = useRef(() => {
+    const handleAnimationEnd = React.useRef(() => {
         setShouldShake(false);
     });
 
