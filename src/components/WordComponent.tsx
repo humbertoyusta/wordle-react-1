@@ -7,10 +7,11 @@ type Props = {
     word: String,
     status: Number[],
     shouldShake?: Boolean,
+    shouldColor?: Boolean,
     onAnimationEnd?: () => void,
 }
 
-export default function WordComponent({word, status, shouldShake = false, onAnimationEnd = () => {}}: Props) {
+export default function WordComponent({word, status, shouldShake = false, shouldColor = false, onAnimationEnd = () => {}}: Props) {
 
     // Get the required length of the word from the context
     const requiredLength = useGameBoardContext().correctWord.length;
@@ -26,18 +27,22 @@ export default function WordComponent({word, status, shouldShake = false, onAnim
     const letters: JSX.Element[] = [];
     for (let i = 0; i < word.length; i++) {
         letters.push(<LetterCellComponent
+            position={counter}
             key={counter ++}
             letter={word[i]}
             status={status[i]}
+            shouldColor={shouldColor}
         />)
     }
 
     // Add empty letter cells to fill the remaining letters
     while (letters.length < requiredLength)
         letters.push(<LetterCellComponent
+            position={counter}
             key={counter ++}
             letter={""}
             status={LetterCellStatusEnum.EMPTY}
+            shouldColor={shouldColor}
         />);
 
     return (

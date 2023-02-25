@@ -1,7 +1,8 @@
 import styled, {keyframes} from "styled-components";
+import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 
 // create a keyframe that scales the element up and down
-const scale = keyframes`
+const scaleAnimation = keyframes`
     0% {
         transform: scale(1);
     }
@@ -13,9 +14,23 @@ const scale = keyframes`
     }
 `;
 
+// create a keyframe that changes the background color of the element
+const colorAnimation = keyframes`
+    0% {
+        background-color: #f2f2f2;
+        border: 1px solid #ccc;
+    }
+    100% {
+        background-color: var(--color-animation-color);
+        border: 0 solid #fff;
+    }
+`;
+
 type LetterCellDivProps = {
   status: Number,
   currentlyFilled: Boolean,
+  shouldColor: Boolean,
+  position: Number,
 };
 
 export const LetterCellDiv = styled.div<LetterCellDivProps>`
@@ -30,11 +45,19 @@ export const LetterCellDiv = styled.div<LetterCellDivProps>`
   height: 45px;
   margin: 3px;
   border: ${props => props.currentlyFilled ? "1px solid #ccc" : "none"};
-  background-color: ${props =>
-          props.status === 1 ? "#d4ffbc" :
-                  props.status === 2 ? "#ffff9f" :
-                          props.status === 3 ? "#ffb3b3" :
-                                  "#f2f2f2"
+  background-color: #f2f2f2;
+
+  --color-animation-color: ${props =>
+      props.status === LetterCellStatusEnum.CORRECT ? "#d4ffbc" :
+          props.status === LetterCellStatusEnum.BAD_POSITION ? "#ffff9f" :
+              props.status === LetterCellStatusEnum.INCORRECT ? "#ffb3b3" :
+                  "#f2f2f2"
   };
-  animation: ${props => props.currentlyFilled ? scale : "none"} 0.3s ease-in-out;
+  animation-name: ${props => props.currentlyFilled ? scaleAnimation :
+      props.shouldColor ? colorAnimation : "none"
+  };
+  animation-duration: ${props => props.shouldColor ? "0.2s" : "0.3s"};
+  animation-timing-function: ease-in-out;
+  animation-delay: ${props => props.shouldColor ? props.position.valueOf() * 0.2 + "s" : "0s"};
+  animation-fill-mode: both;
 `;
