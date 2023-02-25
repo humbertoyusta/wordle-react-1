@@ -22,7 +22,6 @@ export default function GameBoardComponent() {
 
     // get maxGuesses and correctWord from the context
     const {maxGuesses, correctWord} = useGameBoardContext();
-    console.log(correctWord);
 
     const [state, setState] = React.useState<GameBoardState>({
         wordGuesses: [],
@@ -71,6 +70,7 @@ export default function GameBoardComponent() {
                 key={counter ++}
                 word={word}
                 status={state.wordGuessesStatus[index]}
+                shouldColor={true}
             />
     );
 
