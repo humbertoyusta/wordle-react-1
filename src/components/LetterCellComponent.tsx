@@ -1,10 +1,22 @@
 import {LetterCellDiv} from "../styledComponents/LetterCellDiv";
 import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 
-export default function LetterCellComponent({letter, status}: {letter: String, status: Number}) {
+type Props = {
+    letter: String,
+    status: Number,
+    shouldShake: Boolean,
+    onAnimationEnd: () => void,
+};
+
+export default function LetterCellComponent(props: Props) {
     return (
-        <LetterCellDiv status={status} currentlyFilled={(letter !== " " && letter !== "") && (status === LetterCellStatusEnum.EMPTY)}>
-            {letter}
+        <LetterCellDiv
+            status={props.status}
+            currentlyFilled={(props.letter !== " " && props.letter !== "") && (props.status === LetterCellStatusEnum.EMPTY)}
+            shouldShake={props.shouldShake}
+            onAnimationEnd={props.onAnimationEnd}
+        >
+            {props.letter}
         </LetterCellDiv>
     );
 }

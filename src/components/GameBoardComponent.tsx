@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import WordComponent from "./WordComponent";
 import {useGameBoardContext} from "../contexts/GameBoardProvider";
 import useKeypress from "../hooks/useKeypress";
@@ -18,6 +18,7 @@ export type GameBoardState = {
 
 export default function GameBoardComponent() {
     const [alert, setAlert] = React.useState<JSX.Element | undefined>(undefined);
+    const [shouldShake, setShouldShake] = React.useState<Boolean>(false);
 
     // get maxGuesses and correctWord from the context
     const {maxGuesses, correctWord} = useGameBoardContext();
@@ -42,14 +43,20 @@ export default function GameBoardComponent() {
             if (newState.wordGuesses.length === maxGuesses)
                 setAlert(<Alert message={"You lost! The correct word was: " + correctWord} color={"red"} ttl={5000} key={Math.random()}/>);
         } catch (e) {
-            if (e instanceof AlertKeyPressError)
-                setAlert(<Alert message={e.message} color={"red"} ttl={1200} key={Math.random()} />);
+            if (e instanceof AlertKeyPressError) {
+                setAlert(<Alert message={e.message} color={"red"} ttl={1200} key={Math.random()}/>);
+                setShouldShake(true);
+            }
             else {
                 if (!(e instanceof InvalidKeyPressError))
                     throw e;
             }
         }
     }
+
+    const handleAnimationEnd = useRef(() => {
+        setShouldShake(false);
+    });
 
     useKeypress(handleKeyPress);
 
@@ -59,18 +66,27 @@ export default function GameBoardComponent() {
     // List all previous guesses
     const words = state.wordGuesses.map(
         (word: String, index: number) =>
-            <WordComponent key={counter ++} word={word} status={state.wordGuessesStatus[index]} />
+            <WordComponent
+                key={counter ++}
+                word={word}
+                status={state.wordGuessesStatus[index]}
+            />
     );
 
     // Add the current guess
     if (!state.hasWon && state.wordGuesses.length < maxGuesses)
-        words.push(<WordComponent key={counter ++} word={state.currentGuess} status={[]} />);
+        words.push(<WordComponent
+            key={counter ++}
+            word={state.currentGuess}
+            status={[]}
+            shouldShake={shouldShake}
+            onAnimationEnd={handleAnimationEnd.current}
+        />);
 
     // Add empty words to fill the remaining guesses
     while (words.length < maxGuesses)
         words.push(<WordComponent key={counter ++} word={""} status={[]} />);
 
-    console.log(alert);
     return (
         <>
             {alert}

@@ -13,7 +13,26 @@ const scale = keyframes`
     }
 `;
 
-export const LetterCellDiv = styled.div<{status: Number, currentlyFilled: Boolean}>`
+// create a keyframe that makes an element shake horizontally
+const shake = keyframes`
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(5px); 
+    }
+    50% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+`;
+
+export const LetterCellDiv = styled.div<{status: Number, currentlyFilled: Boolean, shouldShake: Boolean}>`
   color: rgba(0, 0, 0, 0.7);
   font-size: 1.2rem;
   display: flex;
@@ -32,4 +51,5 @@ export const LetterCellDiv = styled.div<{status: Number, currentlyFilled: Boolea
                           props.status === 3 ? "#ffb3b3" :
                                   "#f2f2f2"
   };
+  animation:  ${props => props.shouldShake ? shake : "none"} 0.3s ease-in-out;
 `;

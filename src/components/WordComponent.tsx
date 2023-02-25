@@ -3,7 +3,14 @@ import LetterCellComponent from "./LetterCellComponent";
 import {useGameBoardContext} from "../contexts/GameBoardProvider";
 import {WordDiv} from "../styledComponents/WordDiv";
 
-export default function WordComponent({word, status}: {word: String, status: Number[]}) {
+type Props = {
+    word: String,
+    status: Number[],
+    shouldShake?: Boolean,
+    onAnimationEnd?: () => void,
+}
+
+export default function WordComponent({word, status, shouldShake = false, onAnimationEnd = () => {}}: Props) {
 
     // Get the required length of the word from the context
     const requiredLength = useGameBoardContext().correctWord.length;
@@ -18,12 +25,24 @@ export default function WordComponent({word, status}: {word: String, status: Num
     // Create a letter cell for each letter in the word
     const letters: JSX.Element[] = [];
     for (let i = 0; i < word.length; i++) {
-        letters.push(<LetterCellComponent key={counter ++} letter={word[i]} status={status[i]} />)
+        letters.push(<LetterCellComponent
+            key={counter ++}
+            letter={word[i]}
+            status={status[i]}
+            shouldShake={shouldShake}
+            onAnimationEnd={onAnimationEnd}
+        />)
     }
 
     // Add empty letter cells to fill the remaining letters
     while (letters.length < requiredLength)
-        letters.push(<LetterCellComponent key={counter ++} letter={""} status={LetterCellStatusEnum.EMPTY} />);
+        letters.push(<LetterCellComponent
+            key={counter ++}
+            letter={""}
+            status={LetterCellStatusEnum.EMPTY}
+            shouldShake={shouldShake}
+            onAnimationEnd={onAnimationEnd}
+        />);
 
     return (
         <WordDiv>
