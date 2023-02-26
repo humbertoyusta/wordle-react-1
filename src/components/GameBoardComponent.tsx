@@ -7,6 +7,7 @@ import {GameBoardHandleKeyPressHelper} from "../helpers/GameBoardHandleKeyPressH
 import {InvalidKeyPressError} from "../errors/InvalidKeyPressError";
 import {AlertKeyPressError} from "../errors/AlertKeyPressError";
 import Alert from "./Alert";
+import {RevealPositionComponent} from "./RevealPositionComponent";
 
 export type GameBoardState = {
     currentGuess: String,
@@ -14,6 +15,7 @@ export type GameBoardState = {
     letterStatus: Map<String, Number>,
     wordGuesses: String[],
     wordGuessesStatus: Number[][],
+    revealedPositions: Number[],
 }
 
 export default function GameBoardComponent() {
@@ -21,7 +23,7 @@ export default function GameBoardComponent() {
     const [shouldShake, setShouldShake] = React.useState<Boolean>(false);
 
     // get maxGuesses and correctWord from the context
-    const {maxGuesses, correctWord} = useGameBoardContext();
+    const {maxGuesses, correctWord, maxReveals} = useGameBoardContext();
 
     const [state, setState] = React.useState<GameBoardState>({
         wordGuesses: [],
@@ -29,6 +31,7 @@ export default function GameBoardComponent() {
         currentGuess: "",
         hasWon: false,
         letterStatus: new Map<String, Number>(),
+        revealedPositions: [],
     });
 
     const handleKeyPress = (key: String) => {
@@ -58,6 +61,24 @@ export default function GameBoardComponent() {
         setShouldShake(false);
     });
 
+    const handleRevealPosition = () => {
+        const newRevealedPositions = state.revealedPositions.slice();
+        while (true) {
+            const newPosition = Math.floor(Math.random() * correctWord.length);
+            if (!newRevealedPositions.includes(newPosition)) {
+                newRevealedPositions.push(newPosition);
+                break;
+            }
+        }
+        const newPosition = newRevealedPositions[newRevealedPositions.length - 1];
+        let newGuess = state.currentGuess.slice();
+        if (newGuess.length > newPosition.valueOf())
+            newGuess = newGuess.slice(0, newPosition.valueOf()) +
+                correctWord[newPosition.valueOf()] +
+                newGuess.slice(newPosition.valueOf() + 1);
+        setState({...state, revealedPositions: newRevealedPositions, currentGuess: newGuess});
+    };
+
     useKeypress(handleKeyPress);
 
     // Create a counter to use as a key for each word component
@@ -69,6 +90,7 @@ export default function GameBoardComponent() {
             <WordComponent
                 key={counter ++}
                 word={word}
+                revealedPositions={state.revealedPositions}
                 status={state.wordGuessesStatus[index]}
                 shouldColor={true}
             />
@@ -80,13 +102,19 @@ export default function GameBoardComponent() {
             key={counter ++}
             word={state.currentGuess}
             status={[]}
+            revealedPositions={state.revealedPositions}
             shouldShake={shouldShake}
             onAnimationEnd={handleAnimationEnd.current}
         />);
 
     // Add empty words to fill the remaining guesses
     while (words.length < maxGuesses)
-        words.push(<WordComponent key={counter ++} word={""} status={[]} />);
+        words.push(<WordComponent
+            key={counter ++}
+            word={""}
+            status={[]}
+            revealedPositions={[]}
+        />);
 
     return (
         <>
@@ -95,6 +123,9 @@ export default function GameBoardComponent() {
                 {words}
             </div>
             <KeyboardComponent handleKeyPress={handleKeyPress} letterStatus={state.letterStatus} />
+            {state.revealedPositions.length < maxReveals &&
+                <RevealPositionComponent handleRevealPosition={handleRevealPosition} />
+            }
         </>
     );
 }

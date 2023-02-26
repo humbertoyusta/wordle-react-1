@@ -5,17 +5,27 @@ import {AlertKeyPressError} from "../errors/AlertKeyPressError";
 const wordExists = require("word-exists");
 
 export class GameBoardHandleKeyPressHelper {
-    private static handleLetterKeyPress(key: String, oldState: GameBoardState): GameBoardState {
+    private static handleLetterKeyPress(key: String, oldState: GameBoardState, correctWord: String) {
+        let newGuess = oldState.currentGuess.slice();
+        while (oldState.revealedPositions.includes(newGuess.length))
+            newGuess += correctWord[newGuess.length];
+        newGuess += key.toUpperCase();
+        while (oldState.revealedPositions.includes(newGuess.length))
+            newGuess += correctWord[newGuess.length];
         return {
             ...oldState,
-            currentGuess: oldState.currentGuess + key.toUpperCase(),
+            currentGuess: newGuess,
         };
     }
 
     private static handleBackspaceKeyPress(oldState: GameBoardState): GameBoardState {
+        let newGuess = oldState.currentGuess.slice();
+        while (oldState.revealedPositions.includes(newGuess.length - 1)) {
+            newGuess = newGuess.slice(0, -1);
+        }
         return {
             ...oldState,
-            currentGuess: oldState.currentGuess.slice(0, -1),
+            currentGuess: newGuess.slice(0, -1),
         };
     }
 
@@ -23,13 +33,13 @@ export class GameBoardHandleKeyPressHelper {
         if (!GameBoardHelper.isWordValidLength(oldState.currentGuess, correctWord))
             throw new AlertKeyPressError("Not enough letters.");
 
-        if (!wordExists(oldState.currentGuess))
-            throw new AlertKeyPressError("Word must exist.");
+        //if (!wordExists(oldState.currentGuess))
+        //    throw new AlertKeyPressError("Word must exist.");
 
         if (!GameBoardHelper.isWordNotGuessed(oldState.currentGuess, oldState.wordGuesses))
             throw new AlertKeyPressError("Word has already been guessed.");
 
-        const currentGuessStatus = GameBoardHelper.getWordStatus(oldState.currentGuess, correctWord);
+        const currentGuessStatus = GameBoardHelper.getWordStatus(oldState.currentGuess, correctWord, oldState.revealedPositions);
 
         const won = GameBoardHelper.isWordCorrect(oldState.currentGuess, correctWord);
 
@@ -51,7 +61,7 @@ export class GameBoardHandleKeyPressHelper {
 
         // If key is a letter
         if (key.length === 1 && key.match(/[a-zA-Z]/i) && oldState.currentGuess.length < correctWord.length)
-            return this.handleLetterKeyPress(key, oldState);
+            return this.handleLetterKeyPress(key, oldState, correctWord);
 
         // If key is backspace/delete
         if (key === "Backspace" || key === "Delete")

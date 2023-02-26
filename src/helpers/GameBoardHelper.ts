@@ -2,13 +2,17 @@ import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 
 export default class GameBoardHelper {
     // Get the status of each letter in the word
-    static getWordStatus(word: String, correctWord: String): Number[] {
+    static getWordStatus(word: String, correctWord: String, revealedPositions: Number[]): Number[] {
         const status: Number[] = [];
         const frequencyOfNotCorrect = new Map<String, Number>();
 
         // Check if the letter is in the correct position
         // If it isn't, add it to the frequency map
         for (let i = 0; i < word.length; i++) {
+            if (revealedPositions.includes(i)) {
+                status[i] = LetterCellStatusEnum.REVEALED;
+                continue;
+            }
             if (word[i] === correctWord[i]) {
                 status[i] = LetterCellStatusEnum.CORRECT;
             } else {
@@ -19,7 +23,8 @@ export default class GameBoardHelper {
         // Check if the letter is in the word, but in the wrong position
         // If it isn't, mark it as incorrect
         for (let i = 0; i < word.length; i++) {
-            if (status[i] === LetterCellStatusEnum.CORRECT) {
+            if (status[i] === LetterCellStatusEnum.CORRECT ||
+                status[i] === LetterCellStatusEnum.REVEALED) {
                 continue;
             }
             const frequency = frequencyOfNotCorrect.get(word[i]);
