@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+## Copy of the game [wordle](https://www.nytimes.com/games/wordle/index.html) 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Made with React, using typescript, function components, hooks, and styled components
 
-## Available Scripts
+## Functionalities
 
-In the project directory, you can run:
+- The correct word will be selected randomly at the beginning of each game.
+- You can type in the keyboard, or press the buttons to make a word guess.
+- After pressing enter, it will check if the word is valid (it is in the dictionary, 
+it is not already guessed and has the correct length)
+- You can see in your previous guesses, the letters that are correct, that are in the correct word but
+in the wrong position, and the letters that are not in the word, you can also see this status in the 
+keyboard on the screen.
+- If you win or lose you will get a message, and you will not be able to guess anymore.
+- You can ask for a hint, using the hint button of the bottom of the screen, this will reveal
+a random letter of the word, and that letter will be fixed for the rest of the game, it is possible 
+to ask for more than one hint.
 
-### `npm start`
+## Animations
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- When you make a guess, if it is incorrect the letters will shake.
+- When you make a guess, if it is correct the letters will be colored in order from left to right,
+and after that, the letters in the keyboard on the screen will be colored also basen on the status
+- The letters in the current guess will scale up and down when you type.
+- The alert message will fade in and out.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Authors
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [@humbertoyusta](https://www.github.com/humbertoyusta)
