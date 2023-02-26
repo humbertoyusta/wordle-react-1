@@ -48,13 +48,15 @@ export const LetterCellDiv = styled.div<LetterCellDivProps>`
   background-color: #f2f2f2;
 
   --color-animation-color: ${props =>
-      props.status === LetterCellStatusEnum.CORRECT ? "#d4ffbc" :
-          props.status === LetterCellStatusEnum.BAD_POSITION ? "#ffff9f" :
-              props.status === LetterCellStatusEnum.INCORRECT ? "#ffb3b3" :
-                  "#f2f2f2"
+      props.status === LetterCellStatusEnum.REVEALED ? "#bfe7a9" :
+        props.status === LetterCellStatusEnum.CORRECT ? "#d4ffbc" :
+            props.status === LetterCellStatusEnum.BAD_POSITION ? "#ffff9f" :
+                props.status === LetterCellStatusEnum.INCORRECT ? "#ffb3b3" :
+                    "#f2f2f2"
   };
-  animation-name: ${props => props.currentlyFilled ? scaleAnimation :
-      props.shouldColor ? colorAnimation : "none"
+  animation-name: ${props => 
+      props.shouldColor || props.status === LetterCellStatusEnum.REVEALED ? colorAnimation : 
+          props.currentlyFilled ? scaleAnimation : "none"
   };
   animation-duration: ${props => props.shouldColor ? "0.2s" : "0.3s"};
   animation-timing-function: ease-in-out;

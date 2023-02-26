@@ -3,4 +3,5 @@ export const enum LetterCellStatusEnum {
     BAD_POSITION = 2,
     INCORRECT = 3,
     EMPTY = 4,
+    REVEALED = 5,
 };
