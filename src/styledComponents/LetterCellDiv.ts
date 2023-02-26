@@ -54,8 +54,8 @@ export const LetterCellDiv = styled.div<LetterCellDivProps>`
                 props.status === LetterCellStatusEnum.INCORRECT ? "#ffb3b3" :
                     "#f2f2f2"
   };
-  animation-name: ${props => 
-      props.shouldColor || props.status === LetterCellStatusEnum.REVEALED ? colorAnimation : 
+  animation-name: ${props =>
+      (props.shouldColor || props.status === LetterCellStatusEnum.REVEALED) ? colorAnimation : 
           props.currentlyFilled ? scaleAnimation : "none"
   };
   animation-duration: ${props => props.shouldColor ? "0.2s" : "0.3s"};

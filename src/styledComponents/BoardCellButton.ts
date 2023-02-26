@@ -2,6 +2,7 @@
 // having a background color depending on the status of the letter
 // with borders soft rounded and a shadow
 import styled from "styled-components";
+import {LetterCellStatusEnum} from "../enums/LetterCellStatusEnum";
 
 export const BoardCellButton = styled.button<{status: Number, letter: String}>`
   justify-content: center;
@@ -13,9 +14,10 @@ export const BoardCellButton = styled.button<{status: Number, letter: String}>`
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   background-color: ${props =>
-          props.status === 1 ? "#d4ffbc" :
-                  props.status === 2 ? "#ffff9f" :
-                          props.status === 3 ? "#ffb3b3" :
+      props.status === LetterCellStatusEnum.REVEALED ? "#bfe7a9" :
+          props.status === LetterCellStatusEnum.CORRECT ? "#d4ffbc" :
+                  props.status === LetterCellStatusEnum.BAD_POSITION ? "#ffff9f" :
+                          props.status === LetterCellStatusEnum.INCORRECT ? "#ffb3b3" :
                                   "#ffffff"
   };
 `;
