@@ -3,6 +3,7 @@ import React, {createContext} from "react";
 export type GameBoardContextType = {
     correctWord: String,
     maxGuesses: Number,
+    maxReveals: Number,
 };
 
 const GameBoardContext = createContext<GameBoardContextType|undefined>(undefined);
@@ -10,12 +11,17 @@ const GameBoardContext = createContext<GameBoardContextType|undefined>(undefined
 type GameBoardProviderProps = {
     correctWord: String,
     maxGuesses: Number,
+    maxReveals: Number,
     children: React.ReactNode,
 };
 
 export default function GameBoardProvider(props: GameBoardProviderProps) {
     return (
-        <GameBoardContext.Provider value={{correctWord: props.correctWord, maxGuesses: props.maxGuesses}}>
+        <GameBoardContext.Provider value={{
+            correctWord: props.correctWord,
+            maxGuesses: props.maxGuesses,
+            maxReveals: props.maxReveals,
+        }}>
             {props.children}
         </GameBoardContext.Provider>
     );

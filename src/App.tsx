@@ -6,7 +6,7 @@ import getRandomWord from "./helpers/GetRandomWord";
 
 function App() {
     return (
-        <GameBoardProvider maxGuesses={7} correctWord={getRandomWord(5)}>
+        <GameBoardProvider maxGuesses={6} correctWord={getRandomWord(5)} maxReveals={2}>
             <GameBoardComponent />
         </GameBoardProvider>
     );
