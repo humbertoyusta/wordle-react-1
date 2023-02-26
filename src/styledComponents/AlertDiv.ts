@@ -11,7 +11,7 @@ export const AlertDiv = styled.div<{color: String}>`
   padding: 16px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  /* add a transition that makes the alert come from above and fade in */
+  /* transition that makes the alert come from above and fade in */
   transition: all 0.3s ease-in-out;
   opacity: 0;
   visibility: hidden;
