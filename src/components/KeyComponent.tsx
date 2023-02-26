@@ -10,7 +10,11 @@ export default function KeyComponent (props: Props) {
     const status = props.status === undefined ? LetterCellStatusEnum.EMPTY : props.status;
 
     return (
-        <BoardCellButton status={status} letter={props.letter} onClick={() => props.handleKeyPress(props.letter)}>
+        <BoardCellButton
+            status={status}
+            letter={props.letter}
+            onClick={() => props.handleKeyPress(props.letter)}
+        >
             {props.letter}
         </BoardCellButton>
     );

@@ -12,7 +12,10 @@ export default function LetterCellComponent(props: Props) {
     return (
         <LetterCellDiv
             status={props.status}
-            currentlyFilled={(props.letter !== " " && props.letter !== "") && (props.status === LetterCellStatusEnum.EMPTY)}
+            currentlyFilled={
+                (props.letter !== " " && props.letter !== "") &&
+                (props.status === LetterCellStatusEnum.EMPTY)
+            }
             position={props.position}
             shouldColor={props.shouldColor}
         >

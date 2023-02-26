@@ -37,7 +37,13 @@ export default function KeyboardComponent(props: KeyboardProps) {
             {state.keys.map((row, i) => (
                 <KeyBoardRowDiv key={i}>
                     {row.map((key, j) =>
-                        <KeyComponent key={j} letter={key} status={props.letterStatus.get(key)} handleKeyPress={props.handleKeyPress} />)}
+                        <KeyComponent
+                            key={j}
+                            letter={key}
+                            status={props.letterStatus.get(key)}
+                            handleKeyPress={props.handleKeyPress}
+                        />)
+                    }
                 </KeyBoardRowDiv>
             ))}
         </KeyBoardDiv>
