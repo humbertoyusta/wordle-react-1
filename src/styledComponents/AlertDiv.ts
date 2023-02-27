@@ -15,6 +15,7 @@ export const AlertDiv = styled.div<{color: String}>`
   transition: all 0.3s ease-in-out;
   opacity: 0;
   visibility: hidden;
+  z-index: 99;
   /* make the alert visible and fade it in */
   &.show {
     transform: translate(-50%, -50%);
